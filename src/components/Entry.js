@@ -18,7 +18,7 @@ const entryDropSpec = {
     }
 };
 
-let collectDrop = (connect, monitor) => {
+let collectDrop = (connect) => {
     return {
         connectDropTarget: connect.dropTarget()
     };
@@ -33,7 +33,7 @@ const entryDragSpec = {
     }
 };
 
-let collectDrag = (connect, monitor) => {
+let collectDrag = (connect) => {
     return {
         connectDragSource: connect.dragSource()
     };
@@ -42,85 +42,90 @@ let collectDrag = (connect, monitor) => {
 
 
 class Entry extends Component {
-	constructor(props) {
-	super(props);
+    constructor(props) {
+        super(props);
 
-	this.state = {
-    idEntry: this.props.idEntry,
-		name: this.props.name
-	};
+        this.state = {
+            idEntry: this.props.idEntry,
+            name: this.props.name
+        };
 
-  this.delete = this.delete.bind(this)
-  this.addEntry = this.addEntry.bind(this)
-	this.edit = this.edit.bind(this);
-	this._handleKeyPress = this._handleKeyPress.bind(this);
-	this.blur = this.blur.bind(this);
-}
-
-
-delete(e) {
-  this.props.deleteEntry(this.state.idEntry);
-}
-
-blur(e) {
-	e.target.readOnly="readOnly"
-}
-
-edit(e) {
-	this.textInput.readOnly=""
-	this.textInput.focus()
-}
-
-addEntry(event) {
-  this.setState({
-    name: event.target.value
-  })
-    this.props.addEntryName(this.props.idEntry, event.target.value)
-}
-
-_handleKeyPress(e) {
-	if (e.key === 'Enter') {
-      this.textInput.readOnly="readOnly"
+        this.delete = this.delete.bind(this)
+        this.addEntry = this.addEntry.bind(this)
+        this.edit = this.edit.bind(this);
+        this._handleKeyPress = this._handleKeyPress.bind(this);
+        this.blur = this.blur.bind(this);
     }
-}
 
-	render() {
-		const { connectDragSource, connectDropTarget } = this.props;
 
-		return connectDropTarget(connectDragSource(
-			<div className='wrapper-entry'>
-				<div className='content'>
+    delete() {
+        this.props.deleteEntry(this.state.idEntry);
+    }
 
-					<input className ='input-entry'
-								 ref={(input) => { this.textInput = input; }}
+    blur(e) {
+        e.target.readOnly="readOnly"
+    }
+
+    edit() {
+        this.textInput.readOnly=""
+        this.textInput.focus()
+    }
+
+    addEntry(event) {
+        this.setState({
+            name: event.target.value
+        })
+        this.props.addEntryName(this.props.idEntry, event.target.value)
+    }
+
+    _handleKeyPress(e) {
+        if (e.key === 'Enter') {
+            this.textInput.readOnly="readOnly"
+        }
+    }
+
+    render() {
+
+        console.log("Entry",this.props.cards, this.props.entries)
+
+        const { connectDragSource, connectDropTarget } = this.props;
+
+        return connectDropTarget(connectDragSource(
+            <div className='wrapper-entry'>
+                <div className='content'>
+
+                    <input className ='input-entry'
+								 ref={(input) => {
+                            this.textInput = input;
+                        }}
 								 value={this.state.name}
 								 onKeyPress={this._handleKeyPress}
 								 onChange={this.addEntry}
 								 placeholder="Enter text..."
 								 readOnly=""
 								 onBlur={this.blur}
-					>
+                    >
 
-					</input>
-				</div>
+                    </input>
+                </div>
 
-        <div className='deleteEntryGrid' >
-					<img src={editEntry} onClick={this.edit} title="Edit entry" id={this.state.idEntry} alt="delete" className="editMe-entry"/>
-          <img src={deleteEntryImg} onClick={this.delete} title="Delete entry" id={this.state.idEntry} alt="delete" className="deleteMe-entry"/>
-        </div>
+                <div className='deleteEntryGrid' >
+                    <img src={editEntry} onClick={this.edit} title="Edit entry" id={this.state.idEntry} alt="delete" className="editMe-entry"/>
+                    <img src={deleteEntryImg} onClick={this.delete} title="Delete entry" id={this.state.idEntry} alt="delete" className="deleteMe-entry"/>
+                </div>
 
-			</div>
-		));
-	}
+            </div>
+        ));
+    }
 }
 
 const mapStateToProps = state => ({
-  cards: state.cards.cards,
-  entries: state.entries.entries
+    cards: state.get('cards').toJS(),
+    entries: state.get('entries').toJS()
 
 });
-const mapDispatchToProps = dispatch => bindActionCreators( { 
- deleteEntry, addEntryName
+const mapDispatchToProps = dispatch => bindActionCreators( {
+    deleteEntry, addEntryName
 }, dispatch);
 
 

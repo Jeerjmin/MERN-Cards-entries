@@ -3,12 +3,12 @@ import './Header.scss';
 
 export default class Header extends Component {
 	
-	render() {
+    render() {
 		
-		return (
-			<div className="headerWrapper">
-				<div className="companyTitle">Европром</div>
-			</div>
-		);
-	}
+        return (
+            <div className="headerWrapper">
+                <div className="companyTitle">Европром</div>
+            </div>
+        );
+    }
 }
