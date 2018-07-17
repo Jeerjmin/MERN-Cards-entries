@@ -4,7 +4,7 @@
 Webpack, React, Express, Mongoose.</h4>
  <p> To run, you need to install and start MongoDB. <a href="https://www.mongodb.com/">link to official site</a></p>
  <p>After this:</p>
- <p>1.Go to ./ directory and <b>npm install</b></p>
+ <p>1. Go to ./ directory and <b>npm install</b></p>
  <p>2. <b>npm run build</b> go to ./dist/build/index.html and add below code in body</p>
 
   ```html
