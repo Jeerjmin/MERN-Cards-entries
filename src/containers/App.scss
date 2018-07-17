@@ -1,46 +1,24 @@
-.App {
-  text-align: center;
-}
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
+.App-body{
+  width: 80%;
+  margin: 0 auto;
+  text-align: center;
+
 }
 
 .addCard{
   margin: 20px 0;
   width: 70px;
   height: 70px;
+  cursor: pointer;
+
 }
 
-.App-header {
-  background-color: #222;
-  height: 150px;
-  padding: 20px;
-  color: white;
-}
 
-.App-intro {
-  font-size: large;
-}
-@media screen and (min-width: 1028px){
-  .App-body{
-    max-width: 60%;
-    margin: 0 auto;
-  }
-}
-@media screen and (max-width: 1024px){
-  .App-body{
-    max-width: 80%;
-    margin: 0 auto;
-  }
-}
 .searchbar{
   margin: 20px 0px;
 }
-.hidden{
-  display: none;
-}
+
 .searchbar input[type=text] {
     width: 100%;
     box-sizing: border-box;

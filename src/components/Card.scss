@@ -10,42 +10,21 @@
 	flex-direction: column;
 }
 
-.input-card{
-		background-color: #F4F4F4;;
-		border: 0px;
-		align-self: center;
-		font-weight: bold;
-		text-align: center;
-		background-size: 30px 30px;
-		padding: 10px 10px;
-}
-
-
 
 .deleteCardGrid{
 	position: absolute;
 	right: 0;
 	cursor: pointer;
-}
-.deleteMe-card{
-	height: 17px;
-	width: 17px;
-	margin-right: 10px;
-	margin-top: 10px;
-}
-
-.editMe-card {
-	height: 20px;
-	width: 20px;
+	margin-top:3px;
+	margin-right: 3px;
 }
 
 
-.cardGridImageWrapper{
+.DeleteIconCard:hover {
+background: lightgrey;
+}
+
+.cardWrapper{
 	position: relative;
 	display: block;
-}
-
-
-.button-card-add {
-	margin: 10px 50px;
 }

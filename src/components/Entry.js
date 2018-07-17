@@ -1,136 +1,52 @@
 import React, { Component } from 'react';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
-
-import { DragSource, DropTarget } from 'react-dnd';
-
-import {  deleteEntry, addEntryName } from '../action/action'
+import axios from 'axios';
+import {API_URL} from '../config/config'
 import './Entry.scss';
-
-
-const deleteEntryImg = require('../assets/images/deleteIcon.png');
-const editEntry = require('../assets/images/edit.png');
-
-const entryDropSpec = {
-    hover(props, monitor) {
-        const draggedId = monitor.getItem().idEntry;
-        props.updateEntryPosition(draggedId, props.idEntry);
-    }
-};
-
-let collectDrop = (connect) => {
-    return {
-        connectDropTarget: connect.dropTarget()
-    };
-};
-
-
-const entryDragSpec = {
-    beginDrag(props) {
-        return {
-            idEntry: props.idEntry
-        };
-    }
-};
-
-let collectDrag = (connect) => {
-    return {
-        connectDragSource: connect.dragSource()
-    };
-};
-
-
+import Button from '@material-ui/core/Button';
+import DeleteIcon from '@material-ui/icons/Delete'
+import TextArea from "react-textarea-autosize";
+const deleteCardImg = require('../assets/images/close1.png');
 
 class Entry extends Component {
     constructor(props) {
         super(props);
-
         this.state = {
             idEntry: this.props.idEntry,
             name: this.props.name
         };
-
-        this.delete = this.delete.bind(this)
-        this.addEntry = this.addEntry.bind(this)
-        this.edit = this.edit.bind(this);
-        this._handleKeyPress = this._handleKeyPress.bind(this);
-        this.blur = this.blur.bind(this);
     }
 
 
-    delete() {
-        this.props.deleteEntry(this.state.idEntry);
-    }
-
-    blur(e) {
-        e.target.readOnly="readOnly"
-    }
-
-    edit() {
-        this.textInput.readOnly=""
-        this.textInput.focus()
-    }
-
-    addEntry(event) {
-        this.setState({
-            name: event.target.value
+    editEntry = (event) => {
+        this.setState({ name: event.target.value }, () => {
+            if (this.state.name.length > 0)
+                axios.put(`${API_URL}/entry/${this.props.idEntry}/${this.state.name}`)
+            else
+                axios.put(`${API_URL}/entry/${this.props.idEntry}/empty`)
         })
-        this.props.addEntryName(this.props.idEntry, event.target.value)
     }
 
-    _handleKeyPress(e) {
-        if (e.key === 'Enter') {
-            this.textInput.readOnly="readOnly"
-        }
-    }
 
     render() {
-
-        console.log("Entry",this.props.cards, this.props.entries)
-
-        const { connectDragSource, connectDropTarget } = this.props;
-
-        return connectDropTarget(connectDragSource(
+        return (
             <div className='wrapper-entry'>
                 <div className='content'>
+                    <TextArea className = "EntryTextArea"
+                        value={this.state.name}
+                        onChange={this.editEntry}
+                        placeholder="Enter text..." >
 
-                    <input className ='input-entry'
-								 ref={(input) => {
-                            this.textInput = input;
-                        }}
-								 value={this.state.name}
-								 onKeyPress={this._handleKeyPress}
-								 onChange={this.addEntry}
-								 placeholder="Enter text..."
-								 readOnly=""
-								 onBlur={this.blur}
-                    >
+                      </TextArea>
 
-                    </input>
                 </div>
-
                 <div className='deleteEntryGrid' >
-                    <img src={editEntry} onClick={this.edit} title="Edit entry" id={this.state.idEntry} alt="delete" className="editMe-entry"/>
-                    <img src={deleteEntryImg} onClick={this.delete} title="Delete entry" id={this.state.idEntry} alt="delete" className="deleteMe-entry"/>
+                    <img className="deleteEntryImg" src={deleteCardImg}  onClick={() => {this.props.deleteEntry(this.state.idEntry)}} alt="Delete entry" />
                 </div>
-
             </div>
-        ));
+        );
     }
 }
 
-const mapStateToProps = state => ({
-    cards: state.get('cards').toJS(),
-    entries: state.get('entries').toJS()
-
-});
-const mapDispatchToProps = dispatch => bindActionCreators( {
-    deleteEntry, addEntryName
-}, dispatch);
 
 
-
-
-const dragHighOrderEntry = DragSource('entry',entryDragSpec, collectDrag)(connect(mapStateToProps, mapDispatchToProps)(Entry));
-const dragDropHighOrderEntry = DropTarget('entry',entryDropSpec, collectDrop)(dragHighOrderEntry);
-export default dragDropHighOrderEntry
+export default Entry;
