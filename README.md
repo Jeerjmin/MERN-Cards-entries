@@ -1,6 +1,6 @@
 <h2>Hello</h2>
 
-<h4>Это приложение создано с помощью:
+<h4> This application was created using:
 Webpack, React, Express, Mongoose.</h4>
  <p> To run, you need to install and start MongoDB. <a href="https://www.mongodb.com/">link to official site</a></p>
  <p>After this:</p>
